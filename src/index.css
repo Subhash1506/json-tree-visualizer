@@ -10,6 +10,13 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background: #0f172a;
+  color: #f9fafb;
+}
+
+body.light {
+  background: #f9fafb;
+  color: #1f2937;
 }
 
 code {

@@ -49,11 +49,11 @@ function App() {
   const [error, setError] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
   const [searchMessage, setSearchMessage] = useState('');
-  const [darkMode, setDarkMode] = useState(false);
+  const [darkMode, setDarkMode] = useState(true);
   const [reactFlowInstance, setReactFlowInstance] = useState(null);
 
   useEffect(() => {
-    document.body.className = darkMode ? 'dark' : '';
+    document.body.className = darkMode ? 'dark' : 'light';
   }, [darkMode]);
 
   const visualizeJSON = useCallback(() => {
