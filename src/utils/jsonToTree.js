@@ -2,7 +2,6 @@ export const buildTreeFromJSON = (jsonData) => {
   const nodes = [];
   const edges = [];
   let nodeId = 0;
-  const nodeChildren = new Map();
 
   const getNodeType = (value) => {
     if (value === null) return 'primitive';
@@ -11,7 +10,19 @@ export const buildTreeFromJSON = (jsonData) => {
     return 'primitive';
   };
 
-  const createNode = (key, value, path, parentId = null) => {
+  const getSubtreeWidth = (obj) => {
+    const type = getNodeType(obj);
+    if (type === 'primitive') return 1;
+    if (type === 'object') {
+      return Object.values(obj).reduce((sum, val) => sum + getSubtreeWidth(val), 0) || 1;
+    }
+    if (type === 'array') {
+      return obj.reduce((sum, val) => sum + getSubtreeWidth(val), 0) || 1;
+    }
+    return 1;
+  };
+
+  const createNode = (key, value, path, parentId = null, x = 0, y = 0) => {
     const id = `node-${nodeId++}`;
     const type = getNodeType(value);
     
@@ -19,11 +30,15 @@ export const buildTreeFromJSON = (jsonData) => {
     let nodeValue = value;
     
     if (type === 'object') {
-      label = key || 'root';
+      const keys = Object.keys(value);
+      label = key || 'ROOT';
+      nodeValue = `{ ${keys.length} ${keys.length === 1 ? 'property' : 'properties'} }`;
     } else if (type === 'array') {
-      label = `${key || 'root'} [${value.length}]`;
+      label = key || 'ARRAY';
+      nodeValue = `[ ${value.length} ${value.length === 1 ? 'item' : 'items'} ]`;
     } else {
-      label = key !== null ? `${key}: ${JSON.stringify(value)}` : JSON.stringify(value);
+      label = key || 'value';
+      nodeValue = JSON.stringify(value);
     }
 
     nodes.push({
@@ -34,9 +49,10 @@ export const buildTreeFromJSON = (jsonData) => {
         nodeType: type, 
         value: nodeValue,
         path,
-        key 
+        key,
+        fullValue: value
       },
-      position: { x: 0, y: 0 },
+      position: { x, y },
     });
 
     if (parentId) {
@@ -46,85 +62,41 @@ export const buildTreeFromJSON = (jsonData) => {
         target: id,
         type: 'smoothstep',
       });
-      
-      if (!nodeChildren.has(parentId)) {
-        nodeChildren.set(parentId, []);
-      }
-      nodeChildren.get(parentId).push(id);
     }
 
     return { id, type };
   };
 
-  // First pass: create all nodes
-  const traverse = (obj, key, path, parentId = null, level = 0) => {
-    const { id, type } = createNode(key, obj, path, parentId);
+  const traverse = (obj, key, path, parentId = null, level = 0, offsetX = 0) => {
+    const horizontalSpacing = 300;
+    const verticalSpacing = 150;
+    
+    const subtreeWidth = getSubtreeWidth(obj);
+    const nodeX = offsetX + (subtreeWidth * horizontalSpacing) / 2;
+    const nodeY = level * verticalSpacing;
+
+    const { id, type } = createNode(key, obj, path, parentId, nodeX, nodeY);
 
     if (type === 'object') {
+      let currentOffsetX = offsetX;
       for (const [k, v] of Object.entries(obj)) {
         const newPath = path ? `${path}.${k}` : k;
-        traverse(v, k, newPath, id, level + 1);
+        const childWidth = getSubtreeWidth(v);
+        traverse(v, k, newPath, id, level + 1, currentOffsetX);
+        currentOffsetX += childWidth * horizontalSpacing;
       }
     } else if (type === 'array') {
+      let currentOffsetX = offsetX;
       obj.forEach((item, idx) => {
         const newPath = `${path}[${idx}]`;
-        traverse(item, `[${idx}]`, newPath, id, level + 1);
+        const childWidth = getSubtreeWidth(item);
+        traverse(item, `[${idx}]`, newPath, id, level + 1, currentOffsetX);
+        currentOffsetX += childWidth * horizontalSpacing;
       });
     }
-    
-    return id;
   };
 
-  const rootId = traverse(jsonData, null, '$', null, 0);
-
-  // Second pass: position nodes
-  const horizontalSpacing = 220;
-  const verticalSpacing = 100;
-  const nodeWidths = new Map();
-
-  // Calculate subtree widths (bottom-up)
-  const calculateWidth = (nodeId) => {
-    const children = nodeChildren.get(nodeId) || [];
-    
-    if (children.length === 0) {
-      nodeWidths.set(nodeId, 1);
-      return 1;
-    }
-    
-    let totalWidth = 0;
-    children.forEach(childId => {
-      totalWidth += calculateWidth(childId);
-    });
-    
-    nodeWidths.set(nodeId, totalWidth);
-    return totalWidth;
-  };
-
-  calculateWidth(rootId);
-
-  // Position nodes (top-down)
-  const positionNode = (nodeId, x, y) => {
-    const nodeIndex = nodes.findIndex(n => n.id === nodeId);
-    nodes[nodeIndex].position = { x, y };
-
-    const children = nodeChildren.get(nodeId) || [];
-    
-    if (children.length === 0) return;
-
-    // Calculate total width of children
-    const totalWidth = nodeWidths.get(nodeId);
-    let currentX = x - (totalWidth * horizontalSpacing) / 2;
-
-    children.forEach(childId => {
-      const childWidth = nodeWidths.get(childId);
-      const childX = currentX + (childWidth * horizontalSpacing) / 2;
-      positionNode(childId, childX, y + verticalSpacing);
-      currentX += childWidth * horizontalSpacing;
-    });
-  };
-
-  // Start positioning from root at center (0, 0)
-  positionNode(rootId, 0, 0);
+  traverse(jsonData, null, '$', null, 0, 0);
 
   return { nodes, edges };
 };

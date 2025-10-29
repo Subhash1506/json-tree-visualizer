@@ -39,65 +39,38 @@
 .header {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
-  padding: 24px 48px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+  padding: 20px 40px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   display: flex;
   justify-content: space-between;
   align-items: center;
-  position: relative;
-  overflow: hidden;
-}
-
-.header::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(120deg, transparent 0%, rgba(255, 255, 255, 0.1) 50%, transparent 100%);
-  animation: shimmer 3s infinite;
-}
-
-@keyframes shimmer {
-  0% { transform: translateX(-100%); }
-  100% { transform: translateX(100%); }
 }
 
 .dark .header {
-  background: linear-gradient(135deg, #4338ca 0%, #6366f1 50%, #7c3aed 100%);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+  background: linear-gradient(135deg, #4338ca 0%, #6366f1 100%);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
 }
 
 .header h1 {
   margin: 0;
-  font-size: 32px;
-  font-weight: 800;
-  letter-spacing: -0.5px;
-  position: relative;
-  z-index: 1;
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  font-size: 28px;
+  font-weight: 700;
 }
 
 .theme-toggle {
-  background: rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.2);
   border: 2px solid rgba(255, 255, 255, 0.3);
   color: white;
-  padding: 10px 20px;
-  border-radius: 24px;
+  padding: 8px 16px;
+  border-radius: 20px;
   cursor: pointer;
-  font-size: 20px;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  position: relative;
-  z-index: 1;
-  backdrop-filter: blur(8px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  font-size: 18px;
+  transition: all 0.3s ease;
 }
 
 .theme-toggle:hover {
-  background: rgba(255, 255, 255, 0.25);
-  transform: scale(1.05) rotate(15deg);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+  background: rgba(255, 255, 255, 0.3);
+  transform: scale(1.1);
 }
 
 .main-content {
@@ -132,25 +105,13 @@
 
 .panel-header h2 {
   margin: 0;
-  font-size: 22px;
-  font-weight: 700;
+  font-size: 20px;
+  font-weight: 600;
   color: #1f2937;
-  letter-spacing: -0.3px;
 }
 
 .dark .panel-header h2 {
   color: #f9fafb;
-}
-
-.tree-stats {
-  font-size: 13px;
-  color: #6b7280;
-  margin-top: 6px;
-  font-weight: 500;
-}
-
-.dark .tree-stats {
-  color: #9ca3af;
 }
 
 .button-group {

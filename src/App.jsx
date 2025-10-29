@@ -26,20 +26,7 @@ const sampleJSON = {
       "zipCode": "500001"
     },
     "hobbies": ["movies", "gaming", "reading"]
-  },
-  "items": [
-    {
-      "id": 1,
-      "name": "Laptop",
-      "price": 60000.00
-    },
-    {
-      "id": 2,
-      "name": "Mouse",
-      "price": 2000.00
-    }
-  ],
-  "active": true
+  }
 };
 
 function App() {
@@ -66,10 +53,15 @@ function App() {
         ...edge,
         markerEnd: {
           type: MarkerType.ArrowClosed,
-          width: 20,
-          height: 20,
+          width: 25,
+          height: 25,
+          color: '#6366f1',
         },
-        style: { strokeWidth: 2 },
+        style: { 
+          strokeWidth: 3,
+          stroke: '#6366f1',
+        },
+        animated: false,
       }));
 
       setNodes(newNodes);

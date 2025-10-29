@@ -1,19 +1,18 @@
 .custom-node {
-  padding: 14px 24px;
+  padding: 16px 24px;
   border-radius: 12px;
-  border: 2px solid;
+  border: 3px solid;
   background: white;
-  min-width: 180px;
-  max-width: 320px;
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12), 0 2px 4px rgba(0, 0, 0, 0.08);
+  min-width: 200px;
+  max-width: 280px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  font-weight: 500;
+  transition: all 0.3s ease;
 }
 
 .custom-node:hover {
   transform: translateY(-4px) scale(1.02);
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.18), 0 4px 8px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25);
 }
 
 .object-node {
@@ -48,26 +47,49 @@
 }
 
 .node-content {
-  text-align: center;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.node-icon {
+  font-size: 28px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.node-info {
+  flex: 1;
+  min-width: 0;
 }
 
 .node-label {
   font-weight: 700;
-  font-size: 15px;
-  color: #111827;
+  font-size: 16px;
+  color: #1f2937;
   margin-bottom: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
   word-break: break-word;
-  letter-spacing: 0.2px;
-  line-height: 1.4;
+}
+
+.node-value {
+  font-size: 13px;
+  color: #4b5563;
+  margin-bottom: 6px;
+  font-family: 'Courier New', monospace;
+  background: rgba(0, 0, 0, 0.05);
+  padding: 4px 8px;
+  border-radius: 4px;
+  word-break: break-all;
 }
 
 .node-path {
   font-size: 11px;
-  color: #6b7280;
-  font-family: 'SF Mono', 'Monaco', 'Consolas', monospace;
-  margin-top: 6px;
-  opacity: 0.8;
+  color: #9ca3af;
+  font-family: 'Courier New', monospace;
   font-weight: 500;
+  word-break: break-all;
 }
 
 .copy-tooltip {
@@ -122,6 +144,22 @@
   color: #f9fafb;
 }
 
-.dark .node-path {
+.dark .node-value {
   color: #d1d5db;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.dark .node-path {
+  color: #9ca3af;
+}
+
+.custom-handle {
+  width: 12px;
+  height: 12px;
+  background: #6366f1;
+  border: 2px solid white;
+}
+
+.dark .custom-handle {
+  border-color: #0f172a;
 }
