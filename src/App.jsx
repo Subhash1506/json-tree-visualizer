@@ -16,30 +16,64 @@ const nodeTypes = {
 };
 
 const sampleJSON = {
-  "user": {
-    "name": "John Doe",
-    "age": 30,
-    "email": "john@example.com",
-    "address": {
-      "street": "123 Main St",
-      "city": "New York",
-      "zipCode": "10001"
+  "company": {
+    "name": "Tech Innovations Inc",
+    "founded": 2020,
+    "industry": "Software Development",
+    "employees": 250,
+    "headquarters": {
+      "city": "San Francisco",
+      "state": "California",
+      "country": "USA",
+      "coordinates": {
+        "latitude": 37.7749,
+        "longitude": -122.4194
+      }
     },
-    "hobbies": ["reading", "gaming", "coding"]
-  },
-  "items": [
-    {
-      "id": 1,
-      "name": "Laptop",
-      "price": 999.99
-    },
-    {
-      "id": 2,
-      "name": "Mouse",
-      "price": 29.99
+    "departments": [
+      {
+        "name": "Engineering",
+        "head": "Sarah Johnson",
+        "budget": 5000000,
+        "teams": ["Backend", "Frontend", "DevOps", "QA"]
+      },
+      {
+        "name": "Marketing",
+        "head": "Michael Chen",
+        "budget": 2000000,
+        "teams": ["Digital", "Content", "Brand"]
+      }
+    ],
+    "products": [
+      {
+        "id": "prod-001",
+        "name": "CloudSync Pro",
+        "category": "SaaS",
+        "price": 49.99,
+        "features": ["Real-time sync", "256-bit encryption", "Unlimited storage"],
+        "active": true
+      },
+      {
+        "id": "prod-002",
+        "name": "DataAnalytics Suite",
+        "category": "Analytics",
+        "price": 99.99,
+        "features": ["AI-powered insights", "Custom dashboards", "API access"],
+        "active": true
+      }
+    ],
+    "financials": {
+      "revenue": 15000000,
+      "expenses": 12000000,
+      "profit": 3000000,
+      "growth_rate": 0.25
     }
-  ],
-  "active": true
+  },
+  "metadata": {
+    "version": "2.1.0",
+    "last_updated": "2024-01-15",
+    "public": false
+  }
 };
 
 function App() {
@@ -262,9 +296,16 @@ function App() {
 
         <div className="visualization-panel">
           <div className="panel-header">
-            <h2>Tree Visualization</h2>
+            <div>
+              <h2>Tree Visualization</h2>
+              {nodes.length > 0 && (
+                <div className="tree-stats">
+                  {nodes.length} nodes • Interactive • Powered by React Flow
+                </div>
+              )}
+            </div>
             <button onClick={downloadAsImage} className="btn btn-secondary" title="Download as image">
-              📥 Download
+              📥 Download PNG
             </button>
           </div>
           
