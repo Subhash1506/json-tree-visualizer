@@ -89,20 +89,27 @@
 }
 
 .dark .custom-node {
-  background: #1f2937;
+  background: rgba(31, 41, 55, 0.9);
   color: #f9fafb;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
 }
 
 .dark .object-node {
   background: linear-gradient(135deg, #312e81 0%, #4338ca 100%);
+  border-color: #818cf8;
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
 }
 
 .dark .array-node {
   background: linear-gradient(135deg, #064e3b 0%, #059669 100%);
+  border-color: #34d399;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
 }
 
 .dark .primitive-node {
   background: linear-gradient(135deg, #78350f 0%, #d97706 100%);
+  border-color: #fbbf24;
+  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.4);
 }
 
 .dark .node-label {
