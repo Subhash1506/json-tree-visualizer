@@ -56,6 +56,20 @@ function App() {
     document.body.className = darkMode ? 'dark' : 'light';
   }, [darkMode]);
 
+  useEffect(() => {
+    if (reactFlowInstance && nodes.length > 0) {
+      setTimeout(() => {
+        reactFlowInstance.fitView({ 
+          padding: 0.15,
+          includeHiddenNodes: false,
+          minZoom: 0.1,
+          maxZoom: 1.2,
+          duration: 300
+        });
+      }, 100);
+    }
+  }, [nodes, reactFlowInstance]);
+
   const visualizeJSON = useCallback(() => {
     try {
       const parsed = JSON.parse(jsonInput);
@@ -79,13 +93,14 @@ function App() {
       setTimeout(() => {
         if (reactFlowInstance) {
           reactFlowInstance.fitView({ 
-            padding: 0.2, 
-            duration: 800,
-            minZoom: 0.5,
-            maxZoom: 1.5
+            padding: 0.15,
+            includeHiddenNodes: false,
+            minZoom: 0.1,
+            maxZoom: 1.2,
+            duration: 500
           });
         }
-      }, 100);
+      }, 50);
     } catch (err) {
       setError(`Invalid JSON: ${err.message}`);
       setNodes([]);
@@ -263,6 +278,15 @@ function App() {
                 onInit={setReactFlowInstance}
                 nodeTypes={nodeTypes}
                 fitView
+                fitViewOptions={{
+                  padding: 0.15,
+                  includeHiddenNodes: false,
+                  minZoom: 0.1,
+                  maxZoom: 1.2
+                }}
+                minZoom={0.1}
+                maxZoom={2}
+                defaultViewport={{ x: 0, y: 0, zoom: 0.8 }}
                 attributionPosition="bottom-left"
               >
                 <Background />

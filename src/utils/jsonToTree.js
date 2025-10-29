@@ -78,8 +78,8 @@ export const buildTreeFromJSON = (jsonData) => {
   const rootId = traverse(jsonData, null, '$', null, 0);
 
   // Second pass: position nodes
-  const horizontalSpacing = 280;
-  const verticalSpacing = 120;
+  const horizontalSpacing = 220;
+  const verticalSpacing = 100;
   const nodeWidths = new Map();
 
   // Calculate subtree widths (bottom-up)
