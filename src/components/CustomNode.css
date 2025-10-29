@@ -1,0 +1,114 @@
+.custom-node {
+  padding: 12px 20px;
+  border-radius: 8px;
+  border: 2px solid;
+  background: white;
+  min-width: 150px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.custom-node:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.object-node {
+  border-color: #6366f1;
+  background: linear-gradient(135deg, #eef2ff 0%, #e0e7ff 100%);
+}
+
+.array-node {
+  border-color: #10b981;
+  background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+}
+
+.primitive-node {
+  border-color: #f59e0b;
+  background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+}
+
+.highlighted {
+  border-width: 3px;
+  border-color: #ef4444 !important;
+  background: #fee2e2 !important;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7);
+  }
+  50% {
+    box-shadow: 0 0 0 10px rgba(239, 68, 68, 0);
+  }
+}
+
+.node-content {
+  text-align: center;
+}
+
+.node-label {
+  font-weight: 600;
+  font-size: 14px;
+  color: #1f2937;
+  margin-bottom: 4px;
+  word-break: break-word;
+}
+
+.node-path {
+  font-size: 10px;
+  color: #6b7280;
+  font-family: monospace;
+  margin-top: 4px;
+}
+
+.copy-tooltip {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: #10b981;
+  color: white;
+  padding: 12px 20px;
+  border-radius: 6px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.dark .custom-node {
+  background: #1f2937;
+  color: #f9fafb;
+}
+
+.dark .object-node {
+  background: linear-gradient(135deg, #312e81 0%, #4338ca 100%);
+}
+
+.dark .array-node {
+  background: linear-gradient(135deg, #064e3b 0%, #059669 100%);
+}
+
+.dark .primitive-node {
+  background: linear-gradient(135deg, #78350f 0%, #d97706 100%);
+}
+
+.dark .node-label {
+  color: #f9fafb;
+}
+
+.dark .node-path {
+  color: #d1d5db;
+}
