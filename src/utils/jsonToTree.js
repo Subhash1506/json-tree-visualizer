@@ -2,7 +2,7 @@ export const buildTreeFromJSON = (jsonData) => {
   const nodes = [];
   const edges = [];
   let nodeId = 0;
-  const nodePositions = new Map();
+  const nodeChildren = new Map();
 
   const getNodeType = (value) => {
     if (value === null) return 'primitive';
@@ -46,31 +46,19 @@ export const buildTreeFromJSON = (jsonData) => {
         target: id,
         type: 'smoothstep',
       });
+      
+      if (!nodeChildren.has(parentId)) {
+        nodeChildren.set(parentId, []);
+      }
+      nodeChildren.get(parentId).push(id);
     }
 
     return { id, type };
   };
 
-  let currentXByLevel = new Map();
-
+  // First pass: create all nodes
   const traverse = (obj, key, path, parentId = null, level = 0) => {
-    const horizontalSpacing = 300;
-    const verticalSpacing = 120;
-    
-    if (!currentXByLevel.has(level)) {
-      currentXByLevel.set(level, 0);
-    }
-
-    const x = currentXByLevel.get(level);
-    const y = level * verticalSpacing;
-
     const { id, type } = createNode(key, obj, path, parentId);
-    
-    const nodeIndex = nodes.findIndex(n => n.id === id);
-    nodes[nodeIndex].position = { x, y };
-    nodePositions.set(id, { x, y });
-
-    currentXByLevel.set(level, x + horizontalSpacing);
 
     if (type === 'object') {
       for (const [k, v] of Object.entries(obj)) {
@@ -83,30 +71,60 @@ export const buildTreeFromJSON = (jsonData) => {
         traverse(item, `[${idx}]`, newPath, id, level + 1);
       });
     }
+    
+    return id;
   };
 
-  traverse(jsonData, null, '$', null, 0);
+  const rootId = traverse(jsonData, null, '$', null, 0);
 
-  // Center the tree
-  if (nodes.length > 0) {
-    // Find the bounds of all nodes
-    let minX = Infinity;
-    let maxX = -Infinity;
+  // Second pass: position nodes
+  const horizontalSpacing = 280;
+  const verticalSpacing = 120;
+  const nodeWidths = new Map();
+
+  // Calculate subtree widths (bottom-up)
+  const calculateWidth = (nodeId) => {
+    const children = nodeChildren.get(nodeId) || [];
     
-    nodes.forEach(node => {
-      if (node.position.x < minX) minX = node.position.x;
-      if (node.position.x > maxX) maxX = node.position.x;
+    if (children.length === 0) {
+      nodeWidths.set(nodeId, 1);
+      return 1;
+    }
+    
+    let totalWidth = 0;
+    children.forEach(childId => {
+      totalWidth += calculateWidth(childId);
     });
     
-    // Calculate offset to center the tree
-    const treeWidth = maxX - minX;
-    const offset = -treeWidth / 2;
+    nodeWidths.set(nodeId, totalWidth);
+    return totalWidth;
+  };
+
+  calculateWidth(rootId);
+
+  // Position nodes (top-down)
+  const positionNode = (nodeId, x, y) => {
+    const nodeIndex = nodes.findIndex(n => n.id === nodeId);
+    nodes[nodeIndex].position = { x, y };
+
+    const children = nodeChildren.get(nodeId) || [];
     
-    // Apply offset to all nodes
-    nodes.forEach(node => {
-      node.position.x += offset;
+    if (children.length === 0) return;
+
+    // Calculate total width of children
+    const totalWidth = nodeWidths.get(nodeId);
+    let currentX = x - (totalWidth * horizontalSpacing) / 2;
+
+    children.forEach(childId => {
+      const childWidth = nodeWidths.get(childId);
+      const childX = currentX + (childWidth * horizontalSpacing) / 2;
+      positionNode(childId, childX, y + verticalSpacing);
+      currentX += childWidth * horizontalSpacing;
     });
-  }
+  };
+
+  // Start positioning from root at center (0, 0)
+  positionNode(rootId, 0, 0);
 
   return { nodes, edges };
 };
