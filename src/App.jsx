@@ -16,64 +16,30 @@ const nodeTypes = {
 };
 
 const sampleJSON = {
-  "company": {
-    "name": "Tech Innovations Inc",
-    "founded": 2020,
-    "industry": "Software Development",
-    "employees": 250,
-    "headquarters": {
-      "city": "San Francisco",
-      "state": "California",
-      "country": "USA",
-      "coordinates": {
-        "latitude": 37.7749,
-        "longitude": -122.4194
-      }
+  "user": {
+    "name": "Subhash",
+    "age": 30,
+    "email": "subhash@gmail.com",
+    "address": {
+      "street": "123 Hcity",
+      "city": "Hyderabad",
+      "zipCode": "500001"
     },
-    "departments": [
-      {
-        "name": "Engineering",
-        "head": "Sarah Johnson",
-        "budget": 5000000,
-        "teams": ["Backend", "Frontend", "DevOps", "QA"]
-      },
-      {
-        "name": "Marketing",
-        "head": "Michael Chen",
-        "budget": 2000000,
-        "teams": ["Digital", "Content", "Brand"]
-      }
-    ],
-    "products": [
-      {
-        "id": "prod-001",
-        "name": "CloudSync Pro",
-        "category": "SaaS",
-        "price": 49.99,
-        "features": ["Real-time sync", "256-bit encryption", "Unlimited storage"],
-        "active": true
-      },
-      {
-        "id": "prod-002",
-        "name": "DataAnalytics Suite",
-        "category": "Analytics",
-        "price": 99.99,
-        "features": ["AI-powered insights", "Custom dashboards", "API access"],
-        "active": true
-      }
-    ],
-    "financials": {
-      "revenue": 15000000,
-      "expenses": 12000000,
-      "profit": 3000000,
-      "growth_rate": 0.25
-    }
+    "hobbies": ["movies", "gaming", "reading"]
   },
-  "metadata": {
-    "version": "2.1.0",
-    "last_updated": "2024-01-15",
-    "public": false
-  }
+  "items": [
+    {
+      "id": 1,
+      "name": "Laptop",
+      "price": 60000.00
+    },
+    {
+      "id": 2,
+      "name": "Mouse",
+      "price": 2000.00
+    }
+  ],
+  "active": true
 };
 
 function App() {
@@ -89,20 +55,6 @@ function App() {
   useEffect(() => {
     document.body.className = darkMode ? 'dark' : 'light';
   }, [darkMode]);
-
-  useEffect(() => {
-    if (reactFlowInstance && nodes.length > 0) {
-      setTimeout(() => {
-        reactFlowInstance.fitView({ 
-          padding: 0.15,
-          includeHiddenNodes: false,
-          minZoom: 0.1,
-          maxZoom: 1.2,
-          duration: 300
-        });
-      }, 100);
-    }
-  }, [nodes, reactFlowInstance]);
 
   const visualizeJSON = useCallback(() => {
     try {
@@ -126,15 +78,9 @@ function App() {
       
       setTimeout(() => {
         if (reactFlowInstance) {
-          reactFlowInstance.fitView({ 
-            padding: 0.15,
-            includeHiddenNodes: false,
-            minZoom: 0.1,
-            maxZoom: 1.2,
-            duration: 500
-          });
+          reactFlowInstance.fitView({ padding: 0.2, duration: 800 });
         }
-      }, 50);
+      }, 100);
     } catch (err) {
       setError(`Invalid JSON: ${err.message}`);
       setNodes([]);
@@ -296,16 +242,9 @@ function App() {
 
         <div className="visualization-panel">
           <div className="panel-header">
-            <div>
-              <h2>Tree Visualization</h2>
-              {nodes.length > 0 && (
-                <div className="tree-stats">
-                  {nodes.length} nodes • Interactive • Powered by React Flow
-                </div>
-              )}
-            </div>
+            <h2>Tree Visualization</h2>
             <button onClick={downloadAsImage} className="btn btn-secondary" title="Download as image">
-              📥 Download PNG
+              📥 Download
             </button>
           </div>
           
@@ -319,15 +258,6 @@ function App() {
                 onInit={setReactFlowInstance}
                 nodeTypes={nodeTypes}
                 fitView
-                fitViewOptions={{
-                  padding: 0.15,
-                  includeHiddenNodes: false,
-                  minZoom: 0.1,
-                  maxZoom: 1.2
-                }}
-                minZoom={0.1}
-                maxZoom={2}
-                defaultViewport={{ x: 0, y: 0, zoom: 0.8 }}
                 attributionPosition="bottom-left"
               >
                 <Background />
