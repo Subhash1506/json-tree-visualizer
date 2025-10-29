@@ -2,6 +2,7 @@ export const buildTreeFromJSON = (jsonData) => {
   const nodes = [];
   const edges = [];
   let nodeId = 0;
+  const nodePositions = new Map();
 
   const getNodeType = (value) => {
     if (value === null) return 'primitive';
@@ -10,7 +11,7 @@ export const buildTreeFromJSON = (jsonData) => {
     return 'primitive';
   };
 
-  const createNode = (key, value, path, parentId = null, x = 0, y = 0) => {
+  const createNode = (key, value, path, parentId = null) => {
     const id = `node-${nodeId++}`;
     const type = getNodeType(value);
     
@@ -35,7 +36,7 @@ export const buildTreeFromJSON = (jsonData) => {
         path,
         key 
       },
-      position: { x, y },
+      position: { x: 0, y: 0 },
     });
 
     if (parentId) {
@@ -50,31 +51,41 @@ export const buildTreeFromJSON = (jsonData) => {
     return { id, type };
   };
 
-  const traverse = (obj, key, path, parentId = null, level = 0, index = 0) => {
-    const horizontalSpacing = 250;
-    const verticalSpacing = 100;
+  let currentXByLevel = new Map();
+
+  const traverse = (obj, key, path, parentId = null, level = 0) => {
+    const horizontalSpacing = 300;
+    const verticalSpacing = 120;
     
-    const x = index * horizontalSpacing;
+    if (!currentXByLevel.has(level)) {
+      currentXByLevel.set(level, 0);
+    }
+
+    const x = currentXByLevel.get(level);
     const y = level * verticalSpacing;
 
-    const { id, type } = createNode(key, obj, path, parentId, x, y);
+    const { id, type } = createNode(key, obj, path, parentId);
+    
+    const nodeIndex = nodes.findIndex(n => n.id === id);
+    nodes[nodeIndex].position = { x, y };
+    nodePositions.set(id, { x, y });
+
+    currentXByLevel.set(level, x + horizontalSpacing);
 
     if (type === 'object') {
-      let childIndex = 0;
       for (const [k, v] of Object.entries(obj)) {
         const newPath = path ? `${path}.${k}` : k;
-        traverse(v, k, newPath, id, level + 1, index + childIndex);
-        childIndex++;
+        traverse(v, k, newPath, id, level + 1);
       }
     } else if (type === 'array') {
       obj.forEach((item, idx) => {
         const newPath = `${path}[${idx}]`;
-        traverse(item, `[${idx}]`, newPath, id, level + 1, index + idx);
+        traverse(item, `[${idx}]`, newPath, id, level + 1);
       });
     }
   };
 
-  traverse(jsonData, null, '$', null, 0, 0);
+  traverse(jsonData, null, '$', null, 0);
 
   return { nodes, edges };
 };
