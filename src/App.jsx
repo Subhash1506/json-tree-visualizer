@@ -16,46 +16,30 @@ const nodeTypes = {
 };
 
 const sampleJSON = {
-  "name": "Alice Davis",
-  "age": 28,
-  "email": "alice@example.com",
-  "address": {
-    "street": "456 Park Ave",
-    "city": "San Francisco",
-    "state": "CA",
-    "zipCode": "94102"
+  "user": {
+    "name": "John Doe",
+    "age": 30,
+    "email": "john@example.com",
+    "address": {
+      "street": "123 Main St",
+      "city": "New York",
+      "zipCode": "10001"
+    },
+    "hobbies": ["reading", "gaming", "coding"]
   },
-  "hobbies": ["photography", "hiking", "travel"],
-  "skills": {
-    "programming": ["JavaScript", "Python", "React"],
-    "design": ["Figma", "Photoshop"]
-  },
-  "social": {
-    "twitter": "@alicedavis",
-    "github": "alicedavis",
-    "linkedin": "alice-davis"
-  },
-  "projects": [
+  "items": [
     {
       "id": 1,
-      "name": "Portfolio Website",
-      "status": "completed",
-      "tech": ["React", "CSS"]
+      "name": "Laptop",
+      "price": 999.99
     },
     {
       "id": 2,
-      "name": "E-commerce App",
-      "status": "in-progress",
-      "tech": ["Next.js", "MongoDB"]
+      "name": "Mouse",
+      "price": 29.99
     }
   ],
-  "settings": {
-    "theme": "dark",
-    "notifications": true,
-    "language": "en"
-  },
-  "active": true,
-  "verified": false
+  "active": true
 };
 
 function App() {
