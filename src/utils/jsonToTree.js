@@ -87,6 +87,27 @@ export const buildTreeFromJSON = (jsonData) => {
 
   traverse(jsonData, null, '$', null, 0);
 
+  // Center the tree
+  if (nodes.length > 0) {
+    // Find the bounds of all nodes
+    let minX = Infinity;
+    let maxX = -Infinity;
+    
+    nodes.forEach(node => {
+      if (node.position.x < minX) minX = node.position.x;
+      if (node.position.x > maxX) maxX = node.position.x;
+    });
+    
+    // Calculate offset to center the tree
+    const treeWidth = maxX - minX;
+    const offset = -treeWidth / 2;
+    
+    // Apply offset to all nodes
+    nodes.forEach(node => {
+      node.position.x += offset;
+    });
+  }
+
   return { nodes, edges };
 };
 

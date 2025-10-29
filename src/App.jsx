@@ -78,7 +78,12 @@ function App() {
       
       setTimeout(() => {
         if (reactFlowInstance) {
-          reactFlowInstance.fitView({ padding: 0.2, duration: 800 });
+          reactFlowInstance.fitView({ 
+            padding: 0.2, 
+            duration: 800,
+            minZoom: 0.5,
+            maxZoom: 1.5
+          });
         }
       }, 100);
     } catch (err) {
