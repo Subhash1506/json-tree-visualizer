@@ -68,8 +68,8 @@ export const buildTreeFromJSON = (jsonData) => {
   };
 
   const traverse = (obj, key, path, parentId = null, level = 0, offsetX = 0) => {
-    const horizontalSpacing = 300;
-    const verticalSpacing = 150;
+    const horizontalSpacing = 350;
+    const verticalSpacing = 200;
     
     const subtreeWidth = getSubtreeWidth(obj);
     const nodeX = offsetX + (subtreeWidth * horizontalSpacing) / 2;
